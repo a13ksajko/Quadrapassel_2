@@ -19,9 +19,9 @@ class NoticeWindow(QWidget):
 
     # Инициализация окна с кратким объявлением
     def initUI(self):
-        #  Работа с файлом для построчного считывания и объединения строк, добавление получившегося текста в виджет
         self.layout = QGridLayout()
         self.setLayout(self.layout)
+        #  Работа с файлом для построчного считывания и объединения строк, добавление получившегося текста в виджет
         self.file = open(r"etc/Notice.txt", "r", encoding="utf-8")
         self.rules_text = ' '.join(str(x) for x in self.file.readlines())
         self.file.close()
@@ -44,6 +44,7 @@ class NoticeWindow(QWidget):
         self.setPalette(self.palette)
         self.show()
 
+    # Переход в главное меню
     def gotoMainWindow(self):
         sound_click.play()
         self.close()
@@ -97,18 +98,22 @@ class MainMenu(QMainWindow):
         QToolTip.setFont(QFont("Comic Sans MS", 12))
         self.show()
 
+    # Переход в окно по добавлению никнейма
     def gotoAddNickname(self):
         sound_click.play()
         self.nickname_user = NicknameMenu()
 
+    # Переход в окно c рекордами
     def gotoLeaderboard(self):
         sound_click.play()
         self.leaderboard = LeaderboardWindow()
 
+    # Переход в окно с правилами
     def gotoRules(self):
         sound_click.play()
         self.rules = RulesWindow()
 
+    # Переход в окно с выходом из игры
     def gotoExit(self):
         sound_click.play()
         self.exit_window = ExitWindow()
@@ -144,7 +149,7 @@ class NicknameMenu(QWidget):
         self.setPalette(self.palette)
         self.show()
 
-    # Переопределение метода, считывающего нажатие кнопки и возвращающего введёный никнейм, запуск игры
+    # Считывание нажатие кнопки и запуск игры с введёным никнеймом
     def onClick(self):
         sound_click.play()
         self.textboxValue = self.text_box.text()
@@ -162,9 +167,9 @@ class LeaderboardWindow(QWidget):
 
     # Инициализация окна с таблицей рекордов (топ-5)
     def initUI(self):
-        # Создание сетки в виджете, добавление к сетке текста, получаемого методом get_leaders()
         self.layout = QGridLayout()
         self.setLayout(self.layout)
+        # Создание сетки в виджете, добавление к сетке текста, получаемого методом get_leaders()
         self.label = QLabel(self.getLeaders())
         self.label.setFont(QFont("Comic Sans MS", 12))
         self.label.setWordWrap(True)
@@ -198,6 +203,7 @@ class LeaderboardWindow(QWidget):
             result += str(count) + ". " + str(i["name"])[:3] + " - " + str(i["score"]) + "\n"
         return result
 
+    # Закрытие окна
     def closeWindow(self):
         sound_click.play()
         self.close()
@@ -211,9 +217,9 @@ class RulesWindow(QWidget):
 
     # Инициализация окна с описанием правил игры и управлением
     def initUI(self):
-        #  Работа с файлом для построчного считывания и объединения строк, добавление получившегося текста в виджет
         self.layout = QGridLayout()
         self.setLayout(self.layout)
+        #  Работа с файлом для построчного считывания и объединения строк, добавление получившегося текста в виджет
         self.file = open(r"etc/Rules.txt", "r", encoding="utf-8")
         self.rules_text = ' '.join(str(x) for x in self.file.readlines())
         self.file.close()
@@ -236,6 +242,7 @@ class RulesWindow(QWidget):
         self.setPalette(self.palette)
         self.show()
 
+    # Закрытие окна
     def closeWindow(self):
         sound_click.play()
         self.close()
@@ -249,9 +256,9 @@ class ExitWindow(QWidget):
 
     # Инициализация окна выхода из программы
     def initUI(self):
-        # Создание сетки в виджете, добавление к 1 строке сетки текста с вопросом
         self.layout = QGridLayout()
         self.setLayout(self.layout)
+        # Создание текста с вопросом, присоединение к сетке виджета
         self.question_text = QLabel("Вы уверены?")
         self.question_text.setAlignment(Qt.AlignCenter)
         self.question_text.setFont(QFont("Comic Sans MS", 12))
@@ -279,10 +286,12 @@ class ExitWindow(QWidget):
         self.setPalette(self.palette)
         self.show()
 
+    # Закрытие приложения
     def closeApp(self):
         sound_click.play()
         QCoreApplication.instance().quit()
 
+    # Закрытие окна
     def closeWindow(self):
         sound_click.play()
         self.close()
@@ -299,19 +308,19 @@ class Quadrapassel(QWidget):
     def initUI(self):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
-        # Добавляем игровое поле
+        # Добавление игрового поля
         self.quad_board = GameBoard(self, self.user_name)
         self.quad_board.setFixedSize(356, 560)
         self.quad_board.setStyleSheet("border-style: solid; border-width: 3px; border-color: black;")
         self.layout.addWidget(self.quad_board, 0, 0, 4, 4)
-        # Добавляем окно со следующей фигурой
+        # Добавление окна со следующей фигурой
         self.next_piece_board = QLabel(self)
         self.next_piece_pic = QPixmap(r"pictures/shape_0.png")
         self.next_piece_board.setPixmap(self.next_piece_pic)
         self.next_piece_board.setFixedSize(106, 106)
         self.next_piece_board.setAlignment(Qt.AlignCenter)
         self.layout.addWidget(self.next_piece_board, 0, 5)
-        # Добавляем ссылку на github
+        # Добавление qr-ссылки на github
         self.qr_info = QLabel(self)
         self.qr_code = QPixmap(r"pictures/qr.png")
         self.qr_info.setPixmap(self.qr_code)
@@ -319,14 +328,14 @@ class Quadrapassel(QWidget):
         self.qr_info.setAlignment(Qt.AlignCenter)
         self.qr_info.setStyleSheet("border-style: solid; border-width: 3px; border-color: black; border-radius: 8px")
         self.layout.addWidget(self.qr_info, 1, 5)
-        # Добавляем окно с прогрессом игры
+        # Добавление окно с прогрессом игры
         self.hot_key = QLabel(self)
         self.hot_key.setText("Выход <-> CTRL + Q\nРестарт <-> ALT + R\nПауза <-> P")
         self.hot_key.setFixedSize(200, 100)
         self.hot_key.setFont(QFont("Comic Sans MS", 10))
         self.hot_key.setStyleSheet("border-style: solid; border-width: 3px; border-color: black; border-radius: 8px")
         self.layout.addWidget(self.hot_key, 2, 5)
-        # Добавляем окно с выводом очков и уровня сложности
+        # Добавление окно с выводом очков и уровня сложности
         self.info_label = QLabel(self)
         self.info_label.setFixedSize(200, 70)
         self.info_label.setFont(QFont("Comic Sans MS", 10))
@@ -385,16 +394,16 @@ class GameBoard(QFrame):
 
     # Обычный цикл создания фигуры
     def newPiece(self):
-        self.cur_piece.setShape(self.next_piece.pieceShape)
+        self.cur_piece.setShape(self.next_piece.num_shape)
         self.cur_pos_x = self.board_weigth // 2
-        self.cur_pos_y = self.board_height - 1 + self.cur_piece.minY()
+        self.cur_pos_y = self.board_height - 1 + self.cur_piece.startPos()
         self.checkGameOver()
         self.setNextPiece()
 
     # Установка картинки-подсказки следующей фигуры
     def setNextPiece(self):
         self.next_piece.setRandomShape(self.level)
-        self.passel.next_piece_pic = QPixmap(r"pictures/shape_" + str(self.next_piece.pieceShape) + ".png")
+        self.passel.next_piece_pic = QPixmap(r"pictures/shape_" + str(self.next_piece.num_shape) + ".png")
         self.passel.next_piece_board.setPixmap(self.passel.next_piece_pic)
 
     # Проверка возможности создания фигуры, в случае проигрыша запись результатов в отдельных файл
@@ -416,7 +425,7 @@ class GameBoard(QFrame):
         key = event.key()
         mod = event.modifiers()
         # Фикс бага, когда активная фигура при удаления линии могла "провалиться"
-        if not self.is_playing or self.cur_piece.pieceShape == TypeShape.empty_shape:
+        if not self.is_playing or self.cur_piece.num_shape == TypeShape.empty_shape:
             super(GameBoard, self).keyPressEvent(event)
             return
         # Реализация преждевременного выхода из игры
@@ -432,7 +441,7 @@ class GameBoard(QFrame):
         if key == Qt.Key_P:
             self.pauseGame()
             return
-        # Ежели игра на паузе, то обработка движений запрещаются
+        # Запрет дальнейшей обработки движений, если игра на паузе
         if self.is_paused:
             return
         # Движение фигуры влево
@@ -444,7 +453,7 @@ class GameBoard(QFrame):
         # Поворот фигуры
         elif key == Qt.Key_Up:
             self.tryMove(self.cur_piece.rotateShape(), self.cur_pos_x, self.cur_pos_y)
-        # Проброс фигуры на дно
+        # Проброс фигуры в самый низ
         elif key == Qt.Key_Space:
             self.spaceDown()
         # Движение фигуры вниз на 1 клетку
@@ -473,19 +482,19 @@ class GameBoard(QFrame):
             if not self.tryMove(self.cur_piece, self.cur_pos_x, new_y - 1):
                 break
             new_y -= 1
-        self.checkPieceDie()
+        self.checkShapeActive()
 
     # Падение фигуры на 1 клетку вниз, вызываемое либо игроком, либо таймером
     def oneLineDown(self):
         if not self.tryMove(self.cur_piece, self.cur_pos_x, self.cur_pos_y - 1):
-            self.checkPieceDie()
+            self.checkShapeActive()
 
     # Проверка активности фигуры
-    def checkPieceDie(self):
+    def checkShapeActive(self):
         for i in range(4):
             x = self.cur_pos_x + self.cur_piece.getX(i)
             y = self.cur_pos_y - self.cur_piece.getY(i)
-            self.setShapeAt(x, y, self.cur_piece.pieceShape)
+            self.setShape(x, y, self.cur_piece.num_shape)
         self.checkFullLines()
         if self.is_active:
             self.newPiece()
@@ -504,25 +513,26 @@ class GameBoard(QFrame):
         else:
             super(GameBoard, self).timerEvent(event)
 
+    # Определение координат для отрисовки игрового поля по секциям/квадратам
     def paintEvent(self, event):
         painter = QPainter(self)
-        rect = self.contentsRect()
-        board_top = rect.bottom() - self.board_height * self.square_side + 1
+        game_board = self.contentsRect()
+        board_top = game_board.bottom() - self.board_height * self.square_side + 1
         for i in range(self.board_height):
             for j in range(self.board_weigth):
-                shape = self.getShapeAt(j, self.board_height - i - 1)
-                if shape != TypeShape.empty_shape:
-                    self.drawSquare(painter,
-                                    rect.left() + j * self.square_side,
-                                    board_top + i * self.square_side, shape)
-        if self.cur_piece.pieceShape != TypeShape.empty_shape:
+                square = self.getShape(j, self.board_height - i - 1)
+                if square != TypeShape.empty_shape:
+                    self.drawSquare(painter, game_board.left() + j * self.square_side,
+                                    board_top + i * self.square_side, square)
+        if self.cur_piece.num_shape != TypeShape.empty_shape:
             for i in range(4):
                 x = self.cur_pos_x + self.cur_piece.getX(i)
                 y = self.cur_pos_y - self.cur_piece.getY(i)
-                self.drawSquare(painter, rect.left() + x * self.square_side,
+                self.drawSquare(painter, game_board.left() + x * self.square_side,
                                 board_top + (self.board_height - y - 1) * self.square_side,
-                                self.cur_piece.pieceShape)
+                                self.cur_piece.num_shape)
 
+    # Отрисовка отдельных квадратов игрового поля
     def drawSquare(self, painter, x, y, shape):
         colorTable = [(0x000000, 0x000000), (0x8a2be2, 0x320b35),
                       (0x217ca3, 0xe29030), (0x00ffff, 0x739f3d),
@@ -541,28 +551,30 @@ class GameBoard(QFrame):
         painter.drawLine(x + 1, y + self.square_side - 1, x + self.square_side - 1, y + self.square_side - 1)
         painter.drawLine(x + self.square_side - 1, y + self.square_side - 1, x + self.square_side - 1, y + 1)
 
+    # Проверка наличия заполненных линий и их удаление
     def checkFullLines(self):
-        numFullLines = 0
-        num_full_line = []
+        num_full_lines = 0
+        list_full_line = []
         for i in range(self.board_height):
             n = 0
             for j in range(self.board_weigth):
-                if not self.getShapeAt(j, i) == TypeShape.empty_shape:
+                if not self.getShape(j, i) == TypeShape.empty_shape:
                     n = n + 1
             if n == self.board_weigth:
-                num_full_line.append(i)
-        num_full_line.reverse()
-        for i in num_full_line:
+                list_full_line.append(i)
+        list_full_line.reverse()
+        for i in list_full_line:
             for j in range(i, self.board_height - 1):
                 for k in range(self.board_weigth):
-                    self.setShapeAt(k, j, self.getShapeAt(k, j + 1))
-        numFullLines = numFullLines + len(num_full_line)
-        if numFullLines > 0:
-            self.addPoint(numFullLines)
+                    self.setShape(k, j, self.getShape(k, j + 1))
+        num_full_lines = num_full_lines + len(list_full_line)
+        if num_full_lines > 0:
+            self.addPoint(num_full_lines)
             self.is_active = False
             self.cur_piece.setShape(TypeShape.empty_shape)
             self.update()
 
+    # Увеличение уровня и начисление очков
     def addPoint(self, point):
         self.score += point * 10 * self.level
         if self.score >= 50 and self.level == 1:
@@ -583,13 +595,14 @@ class GameBoard(QFrame):
                 self.is_bonus = True
         self.passel.info_label.setText("Level: " + str(self.level) + "\nScore: " + str(self.score))
 
+    # Проверка возможности занятия нового места активной фигурой
     def tryMove(self, newPiece, newX, newY):
         for i in range(4):
             x = newX + newPiece.getX(i)
             y = newY - newPiece.getY(i)
             if x < 0 or x >= self.board_weigth or y < 0 or y >= self.board_height:
                 return False
-            if self.getShapeAt(x, y) != TypeShape.empty_shape:
+            if self.getShape(x, y) != TypeShape.empty_shape:
                 return False
         self.cur_piece = newPiece
         self.cur_pos_x = newX
@@ -597,23 +610,27 @@ class GameBoard(QFrame):
         self.update()
         return True
 
+    # Добавление "бонусной" линии - полной линии с 1 пропуском
     def addBonusLine(self):
         num_empty_square = random.randint(0, 13)
         for y in range(self.board_height - 2, -1, -1):
             for x in range(self.board_weigth):
-                self.setShapeAt(x, y, self.getShapeAt(x, y - 1))
+                self.setShape(x, y, self.getShape(x, y - 1))
         for x in range(self.board_weigth):
             if x != num_empty_square:
-                self.setShapeAt(x, 0, random.randint(1, 8))
+                self.setShape(x, 0, random.randint(1, 8))
 
-    def getShapeAt(self, x, y):
+    # Получение фигуры в данном квадрате игрового поля
+    def getShape(self, x, y):
         return self.game_board[(y * self.board_weigth) + x]
 
-    def setShapeAt(self, x, y, shape):
+    # Установка фигуры в данном квадрате игрового поля
+    def setShape(self, x, y, shape):
         self.game_board[(y * self.board_weigth) + x] = shape
 
 
 class TypeShape(object):
+    # Номера фигур
     empty_shape = 0
     line_shape = 1
     reverse_s_shape = 2
@@ -623,6 +640,7 @@ class TypeShape(object):
     l_shape = 6
     reverse_l_shape = 7
     troll_shape = 8
+    # Таблица координат точек отрисовки фигур
     shape_coords_table = (
         ((0, 0), (0, 0), (0, 0), (0, 0)),
         ((0, -1), (0, 0), (0, 1), (0, 2)),
@@ -640,16 +658,18 @@ class Shape(object):
 
     def __init__(self):
         self.coords = [[0, 0] for _ in range(4)]
-        self.pieceShape = TypeShape.empty_shape
+        self.num_shape = TypeShape.empty_shape
         self.setShape(TypeShape.empty_shape)
 
+    # Заполнение таблицы координат по номеру фигуры
     def setShape(self, shape):
         table = TypeShape.shape_coords_table[shape]
         for i in range(4):
             for j in range(2):
                 self.coords[i][j] = table[i][j]
-        self.pieceShape = shape
+        self.num_shape = shape
 
+    # Создание случайной фигуры в зависимости от уровня игры
     def setRandomShape(self, level):
         if level < 3:
             self.setShape(random.randint(1, 7))
@@ -666,47 +686,35 @@ class Shape(object):
             else:
                 self.setShape(random.randint(2, 7))
 
+    # Получение х-координаты
     def getX(self, index):
         return self.coords[index][0]
 
+    # Получение у-координат
     def getY(self, index):
         return self.coords[index][1]
 
+    # Назначение х-координаты
     def setX(self, index, x):
         self.coords[index][0] = x
 
+    # Назначение у-координаты
     def setY(self, index, y):
         self.coords[index][1] = y
 
-    def minX(self):
-        m = self.coords[0][0]
+    # Нахождение координаты нижней точки фигуры
+    def startPos(self):
+        min_y = self.coords[0][1]
         for i in range(4):
-            m = min(m, self.coords[i][0])
-        return m
+            min_y = min(min_y, self.coords[i][1])
+        return min_y
 
-    def minY(self):
-        m = self.coords[0][1]
-        for i in range(4):
-            m = min(m, self.coords[i][1])
-        return m
-
-    def maxX(self):
-        m = self.coords[0][0]
-        for i in range(4):
-            m = max(m, self.coords[i][0])
-        return m
-
-    def maxY(self):
-        m = self.coords[0][1]
-        for i in range(4):
-            m = max(m, self.coords[i][1])
-        return m
-
+    # Поворот фигуры
     def rotateShape(self):
-        if self.pieceShape in [5, 8]:
+        if self.num_shape in [5, 8]:
             return self
         result = Shape()
-        result.pieceShape = self.pieceShape
+        result.num_shape = self.num_shape
         for i in range(4):
             result.setX(i, self.getY(i))
             result.setY(i, -self.getX(i))
@@ -721,5 +729,6 @@ if __name__ == '__main__':
     sound_game_over = mixer.Sound(r"music/gg.wav")
     music.load("music/theme.wav")
     music.play(-1)
+    music.set_volume(0.4)
     quadrapassel_app = NoticeWindow()
     sys.exit(app.exec_())
