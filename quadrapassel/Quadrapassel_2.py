@@ -436,6 +436,7 @@ class GameBoard(QFrame):
         elif mod == Qt.AltModifier:
             if key == Qt.Key_R:
                 self.new_game = Quadrapassel(self.passel.user_name)
+                self.game_timer.stop()
                 self.passel.close()
         # Реализация паузы в игре
         if key == Qt.Key_P:
@@ -559,7 +560,7 @@ class GameBoard(QFrame):
             n = 0
             for j in range(self.board_weigth):
                 if not self.getShape(j, i) == TypeShape.empty_shape:
-                    n = n + 1
+                    n += 1
             if n == self.board_weigth:
                 list_full_line.append(i)
         list_full_line.reverse()
