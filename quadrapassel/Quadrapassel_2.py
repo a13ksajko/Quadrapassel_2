@@ -596,17 +596,17 @@ class GameBoard(QFrame):
         self.passel.info_label.setText("Level: " + str(self.level) + "\nScore: " + str(self.score))
 
     # Проверка возможности занятия нового места активной фигурой
-    def tryMove(self, newPiece, newX, newY):
+    def tryMove(self, new_piece, new_x, new_y):
         for i in range(4):
-            x = newX + newPiece.getX(i)
-            y = newY - newPiece.getY(i)
+            x = new_x + new_piece.getX(i)
+            y = new_y - new_piece.getY(i)
             if x < 0 or x >= self.board_weigth or y < 0 or y >= self.board_height:
                 return False
             if self.getShape(x, y) != TypeShape.empty_shape:
                 return False
-        self.cur_piece = newPiece
-        self.cur_pos_x = newX
-        self.cur_pos_y = newY
+        self.cur_piece = new_piece
+        self.cur_pos_x = new_x
+        self.cur_pos_y = new_y
         self.update()
         return True
 
